@@ -13,6 +13,7 @@ $db= Database::connect();
 
 
 if($produitId && isset($userTemp)){
+    $produitId = filter_var($produitId, FILTER_VALIDATE_INT);
 
     // Récupérer le produit sur lequel on a cliqué
     $stmt = $db->prepare('SELECT * FROM produits WHERE id = ?');
@@ -37,11 +38,10 @@ if($produitId && isset($userTemp)){
         if($panierProd){
             // UPDATE la qte dans le panier
             $newQtePanier = $panierProd['qte'] + 1;
-         
             $upStmt = $db->prepare('UPDATE panier SET qte = ? WHERE id = ?');
             $upStmt->execute([$newQtePanier, $panierProd['id']]);
 
-            header('Location: ' . $_SERVEUR['HTTP_REFERER']);
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
         }else{
         
             // INSERT du produit dans le panier 
@@ -49,7 +49,7 @@ if($produitId && isset($userTemp)){
             $issertStmt = $db->prepare('INSERT INTO panier (produit_id, qte, userTemp, user_id, date) VALUES (?, ?, ?, ?, ?)');
             $issertStmt->execute([$produitId, $qte, $userTemp, $userId, $dateAdd]);
 
-            header('Location: ' . $_SERVEUR['HTTP_REFERER']);
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
 
         }
 

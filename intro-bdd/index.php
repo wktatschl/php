@@ -54,6 +54,8 @@ Database::disconnect();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>e-commerce test </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
 </head>
 
 <body>
@@ -105,8 +107,8 @@ Database::disconnect();
           <li class="nav-item">
             <a class="nav-link" href="panier.php">
               <i class="bi bi-bag"></i>
+              <span class='badge bg-primary'>1</span>
             </a>
-            <span class='badge bg-primary'>1</span>
           </li>
         </ul>
       </div>
