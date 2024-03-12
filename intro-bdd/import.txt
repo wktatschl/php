@@ -1,0 +1,16 @@
+INSERT INTO introbdd.produits (nom, description, prix, qte, img, categorie_id) VALUES
+('Dell XPS', 'Ultrabook haute performance avec écran InfinityEdge', 1299.99, 10, 'DellXPS.jpg', 5),
+('Dell XPS 13', 'Convertible polyvalent avec écran tactile 13 pouces', 1499.99, 5, 'DellXPS13.png', 6),
+('Google Pixel 7A', 'Smartphone performant avec Android pur', 649.99, 20, 'GooglePixel7A.png', 3),
+('HP Pavilion', 'Ordinateur de bureau polyvalent pour le travail et le jeu', 749.99, 15, 'HPPavilion.jpg', 5),
+('Intel Core i9', 'Processeur puissant pour le gaming et le multitasking', 549.99, 25, 'i9.jpg', 7),
+('iPhone 13', 'Le dernier modèle de smartphone par Apple', 909.99, 30, 'iphone13.png', 2),
+('iPhone 14', 'Smartphone Apple avec une caméra améliorée et un nouveau design', 999.99, 30, 'iphone14.png', 2),
+('iPhone 14 Pro', 'Version Pro avec des caractéristiques haut de gamme', 1159.99, 25, 'iphone14pro.jpg', 2),
+('Lenovo IdeaCentre', 'Ordinateur de bureau compact avec performances solides', 599.99, 20, 'LenovoaIdeaCentre.png', 5),
+('Lenovo ThinkPad', 'Ordinateur portable d\'entreprise avec sécurité renforcée', 1399.99, 10, 'LenovoThinkPad.png', 6),
+('MacBook Pro', 'Portable puissant pour les créateurs avec puce M1', 2499.99, 8, 'MacBookPro.png', 6),
+('OnePlus 11', 'Smartphone avec charge rapide et écran AMOLED', 799.99, 15, 'OnePlus11.png', 3),
+('NVIDIA GeForce RTX', 'Carte graphique pour une expérience de jeu ultime', 1499.99, 10, 'RTX40490.png', 7),
+('Samsung Galaxy A54', 'Smartphone milieu de gamme avec excellentes caractéristiques', 359.99, 50, 'SamsungGalaxyA54.jpg', 3),
+('Samsung EVO SSD', 'Disque dur SSD fiable et rapide', 109.99, 100, 'SSD.png', 7);

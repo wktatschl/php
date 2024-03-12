@@ -1,0 +1,23 @@
+.product-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* padding: 50px; */
+    gap: 15px;
+    width: 90%;
+    margin: 60px auto;
+}
+
+.product-list-container .card {
+    padding: 15px;
+}
+
+.product-list-container img {
+    width: auto;
+    height: 100%;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 40px;
+}
