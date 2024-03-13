@@ -31,11 +31,9 @@ if (!empty($categ_id)) {
   $stmt->execute([$categ_id]);
 
   ///////////////////////// Equivalent à : parametre nommé -> plus explicite /////////////////////////
-
-
-  // $query= 'SELECT * FROM produits WHERE categorie_id = :categ_id';
-  // $stmt = $db->prepare($query);
-  // $stmt -> execute(['categ_id' => $categ_id]);
+  $query= 'SELECT * FROM produits WHERE categorie_id = :categ_id';
+  $stmt = $db->prepare($query);
+  $stmt -> execute(['categ_id' => $categ_id]);
 } else {
 
   $query = 'SELECT * FROM produits';
@@ -43,6 +41,7 @@ if (!empty($categ_id)) {
 }
 $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
 Database::disconnect();
+
 
 ?>
 
