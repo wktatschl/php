@@ -96,14 +96,17 @@ $totalPanier=0 ;
 
   <script>
     // On récupère tous les boutons de changement de quantité
-    document.querySelectorAll('.changeQte').forEach(btn => {
+    document.querySelectorAll('.changeQte').forEach(function(btn){
         //  On crée un écouteur d'événement sur chaque bouton
-        btn.addEventListener('click', () => {
-            let action = this.dataset.action 
-            let id = this.dataset.id
+   
+        btn.addEventListener('click', function(e){
+            const action = this.dataset.action 
+            const id = this.dataset.id
             // On récupère le tr sur lequel se trouve le span
             let row = this.closest('tr')
             let qteEle = row.querySelector('span')
+           
+            
             // On récupère la qte 
             let newQte = parseInt(qteEle.textContent)
 
