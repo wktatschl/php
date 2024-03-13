@@ -2,9 +2,9 @@
 class Database
 {
     private static $dbHost = 'localhost';
-    private static $dbName = 'mabddtest';
+    private static $dbName = 'maBddTest';
     private static $dbUser = 'root';
-    private static $dbPass = '';
+    private static $dbPass = 'root';
 
     private static $connection = null;
 

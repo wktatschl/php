@@ -1,4 +1,4 @@
-INSERT INTO introbdd.produits (nom, description, prix, qte, img, categorie_id) VALUES
+INSERT INTO maBddTest.produits (nom, description, prix, qte, img, categorie_id) VALUES
 ('Dell XPS', 'Ultrabook haute performance avec écran InfinityEdge', 1299.99, 10, 'DellXPS.jpg', 5),
 ('Dell XPS 13', 'Convertible polyvalent avec écran tactile 13 pouces', 1499.99, 5, 'DellXPS13.png', 6),
 ('Google Pixel 7A', 'Smartphone performant avec Android pur', 649.99, 20, 'GooglePixel7A.png', 3),

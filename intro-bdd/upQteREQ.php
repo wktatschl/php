@@ -5,26 +5,53 @@ $db = Database::connect();
 if(isset($_POST['id']) && isset($_POST['qte'])){
     $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
     $qte = filter_var($_POST['qte'], FILTER_VALIDATE_INT);
-// Mettre à jour le panier avec la nouvelle qte 
-    $stmtPanier = $db->prepare('UPDATE panier SET qte = ? WHERE id = ?');
-    $successUpPanier = $stmtPanier->execute([$qte, $id]);
 
-    // Si le panier a été mis à jour
-    if($successUpPanier){
+    if (filter_var($qte, FILTER_VALIDATE_INT) && $qte > 0) {
 
-        // Récupérer l'id du produit qui est au panier 
-        $stmtProdId = $db->prepare('SELECT produit_id FROM panier WHERE id = ?');
-        $stmtProdId-> execute([$id]);
-        $prodId = $stmtProdId->fetch(PDO::FETCH_ASSOC); 
+        $stmt = $db->prepare('SELECT * FROM panier WHERE id = ?');
+        $stmt->execute([$id]);
+        $panier = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($panier) {
+            $qteActuelle = $panier['qte'];
+            $produitId = $panier['produit_id'];
 
-        if($prodId){
-            //  Mettre la qte en stock à jour
-            $stmtProd = $db->prepare('UPDATE produits SET qte = qte - ? WHERE id = ?');
-            $successUpProd = $stmtProd->execute([$qte, $prodId['produit_id']]);
+            $stmt = $db->prepare('SELECT * FROM produits WHERE id = ?');
+            $stmt->execute([$produitId]);
+            $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if($produit && $produit['qte'] >= $qte) {
+
+                $stmt = $db->prepare('UPDATE panier SET qte = ? WHERE id = ?');
+                $successUpPanier = $stmt->execute([$qte, $prodId]);
+
+                if($successUpPanier) {
+
+                    $diff = $qte - $panier['qte'];
+
+                    $stmtProd = $db->prepare('UPDATE produits SET qte = qte - ? WHERE id = ?');
+                    $successUpProd = $stmtProd->execute([$qte, $panier['produit_id']]);
+
+                    if ($successUpProd) {
+                        echo 'success';
+                    } else {
+                        echo 'erreur';
+                    }
+
+                } else {
+                    echo 'erreur';
+                }
+            } else {
+                echo 'erreur';
+            }
+        } else {
+            echo 'erreur';
         }
-
+    } else {
+        echo 'erreur';
     }
  
+} else {
+    echo 'erreur';
 }
 
 Database::disconnect();

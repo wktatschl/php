@@ -15,8 +15,8 @@ session_start();
    $panier = $stmt->fetchAll(PDO::FETCH_ASSOC);
  }else{
     $query = 'SELECT pa.*, p.nom, p.prix 
-              FROM panier
-              INNER JOIN  produits ON pa.produit_id = p.id 
+              FROM panier pa
+              INNER JOIN  produits p ON pa.produit_id = p.id 
               WHERE userTemp = ? AND user_id IS NULL';
     $stmt = $db->prepare($query);
     $stmt->execute([$userTemp]);
