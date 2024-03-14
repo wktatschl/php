@@ -72,9 +72,9 @@ $totalPanier=0 ;
           <button class='btn btn-secondary btn-sm changeQte' data-id="<?= $item['id']; ?>" data-action="increase">+</button>
     </td>
       <td><?= htmlspecialchars($item['prix']); ?>€</td>
-      <td><?= $item['prix'] * $item['qte']; ?>€</td>
+      <td class='sous-total'><?= $item['prix'] * $item['qte']; ?>€</td>
       <td>
-        <button class="btn btn-danger">Supprimer</button>
+        <button class="btn btn-danger btn-delete" data-id="<?= $item['id']; ?>">Supprimer</button>
       </td>
     </tr>
     <?php $totalPanier += $item['prix'] * $item['qte']; ?>
@@ -83,7 +83,7 @@ $totalPanier=0 ;
   <tfoot>
     <tr>
       <th colspan="3">Total panier:</th>
-      <td><?= $totalPanier; ?>€</td>
+      <td class='total-panier'><?= $totalPanier; ?>€</td>
       <!-- <td>
         <button class="btn btn-success">Valider le panier</button>
       </td> -->
@@ -95,6 +95,7 @@ $totalPanier=0 ;
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
   <script>
+    // Mettre à jour la quantité
     // On récupère tous les boutons de changement de quantité
     document.querySelectorAll('.changeQte').forEach(function(btn){
         //  On crée un écouteur d'événement sur chaque bouton
@@ -146,6 +147,40 @@ $totalPanier=0 ;
 
         })
 
+    })
+
+
+    // Supprimer un produit du panier
+    document.querySelectorAll('.btn-delete').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        const id = this.dataset.id
+        let row = this.closest('tr')
+        const confirmation = confirm('Voulez-vous vraiment supprimer ce produit ?')
+
+        if(confirmation){
+          fetch('suppPanierREQ.PHP',{
+            method:'POST', 
+            headers:{
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `id=${id}`
+          })
+          .then(response =>response.text())
+          .then(data => {
+          if(data.trim() === 'success'){
+            row.remove()
+            let totalPanier = 0
+            document.querySelectorAll('.sous-total').forEach(function(st){
+                totalPanier += parseFloat(st.textContent)
+            })
+
+            document.querySelector('.total-panier').textContent = totalPanier.toFixed(2) + '€'
+          }else{
+            console.log(`La suppression a échoué ${data}`)
+          }
+          })
+        }
+      })
     })
 
 
