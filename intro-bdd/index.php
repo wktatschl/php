@@ -1,14 +1,36 @@
 <?php
 require 'bdd.php';
 session_start();
-if (!isset($_SESSION['userTemp'])){
+
+$db = Database::connect();
+
+if (!isset($_SESSION['userTemp'])) {
   $_SESSION['userTemp'] = time();
+}
+
+$userTemp = $_SESSION['userTemp'] ?? null;
+$userId = $_SESSION['userId'] ?? null;
+
+if (!empty($userId)) {
+  $query = 'SELECT sum(qte) as nbProduits 
+            FROM panier
+            WHERE user_id = ?';
+  $stmt = $db->prepare($query);
+  $stmt->execute([$userId]);
+  $nbProduits = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+  $query = 'SELECT sum(qte) as nbProduits 
+             FROM panier 
+             WHERE userTemp = ? AND user_id IS NULL';
+  $stmt = $db->prepare($query);
+  $stmt->execute([$userTemp]);
+  $nbProduits = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 
 
 
-$db = Database::connect();
+
 
 // Récupérer toutes les categs parentes 
 $query = "SELECT * FROM categories WHERE parent = 0";
@@ -31,9 +53,9 @@ if (!empty($categ_id)) {
   $stmt->execute([$categ_id]);
 
   ///////////////////////// Equivalent à : parametre nommé -> plus explicite /////////////////////////
-  $query= 'SELECT * FROM produits WHERE categorie_id = :categ_id';
+  $query = 'SELECT * FROM produits WHERE categorie_id = :categ_id';
   $stmt = $db->prepare($query);
-  $stmt -> execute(['categ_id' => $categ_id]);
+  $stmt->execute(['categ_id' => $categ_id]);
 } else {
 
   $query = 'SELECT * FROM produits';
@@ -84,6 +106,14 @@ Database::disconnect();
         </ul>
 
         <ul class="navbar-nav ms-auto">
+
+        <?php if (isset($_SESSION['userId']) && isset($_SESSION['userRole']) && $_SESSION['userRole'] === 'admin') { ?>
+          <li class="nav-item">
+            <a class="nav-link" href="backoffice/index.php">BackOffice</a>
+          </li>
+          <?php } ?>
+
+
           <?php if (isset($_SESSION['userId'])) { ?>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -106,7 +136,7 @@ Database::disconnect();
           <li class="nav-item">
             <a class="nav-link" href="panier.php">
               <i class="bi bi-bag"></i>
-              <span class='badge bg-primary'>1</span>
+              <span class='badge bg-primary'><?= $nbProduits['nbProduits']; ?></span>
             </a>
           </li>
         </ul>

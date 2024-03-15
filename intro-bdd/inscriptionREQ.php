@@ -24,9 +24,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 // Permet de protéger contre les attaques par rainbow table ( table de hashage)
 //  PASSWORD_DEFAULT : utilise l'algoriythme Bcrypt pour hasher les mots de passe 
     $mdpHash = password_hash($mdp, PASSWORD_DEFAULT);
+    $role='user';
 
-    $stmt = $db->prepare('INSERT INTO utilisateurs (nom, email, mot_de_passe) VALUES (:nom, :mail, :mdp)');
-    $success = $stmt->execute(['nom' => $nom, 'mail' => $mail, 'mdp' => $mdpHash]);
+    $stmt = $db->prepare('INSERT INTO utilisateurs (nom, email, mot_de_passe, role) VALUES (:nom, :mail, :mdp, :role)');
+    $success = $stmt->execute(['nom' => $nom, 'mail' => $mail, 'mdp' => $mdpHash,'role' => $role ]);
 
     if($success){
         header('Location: connexion.php');

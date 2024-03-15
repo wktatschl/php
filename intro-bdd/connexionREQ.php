@@ -16,6 +16,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     //  Vérifier si l'utilisateur existe et si le mot de passe est correct 
     if($user && password_verify($mdp, $user['mot_de_passe'])){
         $_SESSION['userId'] = $user['id'];
+        $_SESSION['userRole']= $user['role'];
         header('Location: index.php');
     }else{
         $error = 'Email ou mot de passe incorrect';
