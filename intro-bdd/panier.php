@@ -26,11 +26,6 @@ session_start();
 $totalPanier=0 ;
 
 
-//  Nom du produit 
-//  qte au panier 
-//  prix produit 
-//  prix total = prix produit * qte panier 
-
 
  Database::disconnect();
 
@@ -71,7 +66,7 @@ $totalPanier=0 ;
           <span><?= htmlspecialchars($item['qte']); ?></span>
           <button class='btn btn-secondary btn-sm changeQte' data-id="<?= $item['id']; ?>" data-action="increase">+</button>
     </td>
-      <td><?= htmlspecialchars($item['prix']); ?>€</td>
+      <td class='prix-unitaire'><?= htmlspecialchars($item['prix']); ?>€</td>
       <td class='sous-total'><?= $item['prix'] * $item['qte']; ?>€</td>
       <td>
         <button class="btn btn-danger btn-delete" data-id="<?= $item['id']; ?>">Supprimer</button>
@@ -106,7 +101,11 @@ $totalPanier=0 ;
             // On récupère le tr sur lequel se trouve le span
             let row = this.closest('tr')
             let qteEle = row.querySelector('span')
-           
+            let sousTotal = row.querySelector('.sous-total')
+            let prixUnitaire = parseFloat(row.querySelector('.prix-unitaire').textContent)
+            let totalPanier = 0
+      
+      
             
             // On récupère la qte 
             let newQte = parseInt(qteEle.textContent)
@@ -137,6 +136,17 @@ $totalPanier=0 ;
             .then(data => {
                     if(data.trim() === 'success'){
                         qteEle.textContent = newQte
+
+                        // Mettre à jour le sous-total
+                        sousTotal.textContent = (prixUnitaire * newQte).toFixed(2) + '€'
+
+                        // Mettre à jour le total du panier
+                        document.querySelectorAll('.sous-total').forEach(function(st){
+                            totalPanier += parseFloat(st.textContent)
+                        })
+                        document.querySelector('.total-panier').textContent = totalPanier.toFixed(2) + '€'
+                       
+
 
                     }else{
                         console.log("Erreur")

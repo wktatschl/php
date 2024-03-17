@@ -27,9 +27,9 @@ if(isset($_POST['id']) && isset($_POST['qte'])){
             $diff = $qte - $panier['qte'];
 
             // On vérifie que la quantité en stock est suffisante
-            // if($produit && $produit['qte'] >= $diff){
-                // Equivalent
-            if($produit && $produit['qte'] > 0){
+            if($produit && $produit['qte'] >= $diff){
+            
+          
 
             // On met à jour la quantité dans le panier
                 $stmt = $db->prepare('UPDATE panier SET qte = ? WHERE id = ?');
