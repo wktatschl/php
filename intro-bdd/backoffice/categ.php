@@ -1,22 +1,9 @@
 <?php
 require '../bdd.php';
 session_start();
-// Vérifier si l'utilisateur est connecté et si c'est un admin
-if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'admin') {
-    header('Location: ../index.php');
-    exit();
-}
-
 $db = Database::connect();
-
-// Récupérer tous les produits
-$stmt = $db->query('SELECT * FROM produits');
-$produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Récupérer toutes les sous-catégories
-$query = "SELECT * FROM categories WHERE parent != 0";
-$childCategs = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-
+ $query = "SELECT * FROM categories WHERE parent = 0";
+ $categories = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -56,7 +43,7 @@ $childCategs = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 <main class='col-md-9'>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Ajouter un produit
+        Ajouter une catégorie
     </button>
 
     <!-- Modal -->
@@ -64,45 +51,18 @@ $childCategs = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter un produit</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter une catégorie</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
 
-                    <form action="addProdREQ.php" method="POST" enctype="multipart/form-data">
+                    <form action="addCategREQ.php" method="POST">
                         <div class="mb-3">
-                            <label for="nom" class="form-label">Nom de produit</label>
+                            <label for="nom" class="form-label">Nom de la catégorie</label>
                             <input type="text" class="form-control" id="nom" name="nom">
                         </div>
-                        <div class="mb-3">
-                            <label for="desc" class="form-label">Description</label>
-                            <input type="text" class="form-control" id="desc" name="description">
-                        </div>
-                        <div class="mb-3 form-check">
-                            <label class="form-check-label" for="prix">Prix</label>
-                            <input type="number" class="form-controlt" id="prix" name="prix">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="qte" class="form-label">Quantité en stock</label>
-                            <input type="number" class="form-control" id="qte" name="qte">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="img" class="form-label">Image du produit</label>
-                            <input type="file" class="form-control" id="img" name="img">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="sscategs" class="form-label">Sous-catégories</label>
-                            <select name="categ_id" id="sscategs" class="form-select">
-                                <?php foreach ($childCategs as $childCateg) { ?>
-                                    <option value="<?= $childCateg['id']; ?>"><?= $childCateg['nom']; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-
+    
 
                 </div>
                 <div class="modal-footer">
@@ -118,25 +78,18 @@ $childCategs = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Image</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Descritpion</th>
-                <th scope="col">Prix</th>
-                <th scope="col">qte en stock </th>
+                <th scope="col">Nom de la caatégorie</th>
                 <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($produits as $produit) { ?>
+            <?php foreach ($categories as $categ) { ?>
                 <tr>
-                    <th scope="row"><?= htmlspecialchars($produit['id']); ?></th>
-                    <td><img src="../img/<?= htmlspecialchars($produit['img']); ?>" alt="<?= htmlspecialchars($produit['nom']); ?>" style="width:50px; height:auto"></td>
-                    <td><?= htmlspecialchars($produit['nom']); ?></td>
-                    <td><?= htmlspecialchars($produit['description']); ?></td>
-                    <td><?= htmlspecialchars($produit['prix']); ?></td>
-                    <td><?= htmlspecialchars($produit['qte']); ?></td>
+                    <th scope="row"><?= htmlspecialchars($categ['id']); ?></th>
+                    <td><?= htmlspecialchars($categ['nom']); ?></td>
                     <td>
 
+                        <a href="ssCateg.php?id=<?= $categ['id']; ?>" class="btn btn-primary">Voir les sous-catégories</a>
                         <a href="edit.php?id=<?= $produit['id']; ?>" class="btn btn-primary">Modifier</a>
                         <a href="delete.php?id=<?= $produit['id']; ?>" class="btn btn-danger">Supprimer</a>
                     </td>
