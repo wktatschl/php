@@ -18,7 +18,9 @@ class AnimalDAO {
         $stmt->bindValue(':idAnimal', $idAnimal, PDO::PARAM_INT);
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    
         return $res['libelle'];
+
     }
 
     public static function getImagesAnimal($idAnimal){
@@ -30,6 +32,8 @@ class AnimalDAO {
             WHERE ia.idAnimal = :idAnimal");
         $stmt->bindValue(':idAnimal', $idAnimal, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
     }
 }
