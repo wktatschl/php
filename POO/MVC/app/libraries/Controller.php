@@ -4,10 +4,13 @@ class Controller{
     public function model($model){
         if(file_exists('../app/models/' .$model. '.php')){
             require_once '../app/models/' .$model. '.php';
+            return new $model();
+ 
         }else{
             die('Ce modèle n\'existe pas');
         }
     }
+
 
     public function render($view, $data=[]){
         // On récupère la class dans laquelle la méthode render est appelée 
